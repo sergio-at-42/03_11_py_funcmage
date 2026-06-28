@@ -7,31 +7,47 @@ from typing import Any, Callable
 
 
 def enchantment(power: int, element: str, target: str) -> str:
-    return(f"{element} enchantmen with {power} HP to cast on {target}")
+    return(f"{element} enchantment with {power} HP to cast on {target}")
+
+
+# def spell_reducer(spells: list[int], operation: str) -> int:
+#     reduce: int = 0
+#     if spells:
+#         match operation:
+#             case "add":
+#                 reduce = functools.reduce(operator.add, spells)
+#             case "multiply":
+#                 reduce = functools.reduce(operator.mul, spells)
+#             case "max":
+#                 reduce = functools.reduce(max, spells)
+#             case "min":
+#                 reduce = functools.reduce(min, spells)
+#             case _:
+#                 print(f"{operation} : operation is unknown...")
+#     return (reduce)
 
 
 def spell_reducer(spells: list[int], operation: str) -> int:
+    ops: dict[str, Callable] = {
+        "add": operator.add,
+        "multiply": operator.mul,
+        "max": max,
+        "min": min,
+    }
     reduce: int = 0
     if spells:
-        match operation:
-            case "add":
-                reduce = functools.reduce(operator.add, spells)
-            case "multiply":
-                reduce = functools.reduce(operator.mul, spells)
-            case "max":
-                reduce = functools.reduce(max, spells)
-            case "min":
-                reduce = functools.reduce(min, spells)
-            case _:
-                print(f"{operation} : operation is unknown...")
+        if operation in ops:
+            reduce = functools.reduce(ops[operation], spells)
+        else:
+            print(f"Error : operation '{operation}' is unknown...")
     return (reduce)
 
 
 def partial_enchanter(base_enchantment: Callable) -> dict[str,Callable]:
     return ({
-        "specialized versions 1": functools.partial(base_enchantment, power=50),
-        "specialized versions 2": functools.partial(base_enchantment, power=50),
-        "specialized versions 3": functools.partial(base_enchantment, power=50),
+        "fire": functools.partial(base_enchantment, 50, "fire"),
+        "ice": functools.partial(base_enchantment, 50, "ice"),
+        "lightning": functools.partial(base_enchantment, 50, "lightning")
     })
 
 
@@ -72,6 +88,13 @@ def functools_artifacts() -> None:
     print(f"Min:   {spell_reducer(spells, "min")}")
     print(f"Toto:   {spell_reducer(spells, "toto")}")
     print(f"Empty Spell:   {spell_reducer([], "add")}")
+    print("")
+
+    print("Testing partial enchanter...")
+    enchants = partial_enchanter(enchantment)
+    print(enchants["fire"]("Sword"))
+    print(enchants["ice"]("Shield"))
+    print(enchants["lightning"]("Bow"))
     print("")
 
     print("Testing memoized fibonacci...")
