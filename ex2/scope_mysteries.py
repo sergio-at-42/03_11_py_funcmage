@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 
 
-import random
-from typing import Callable
+from collections.abc import Callable
 
 
-def mage_counter() -> Callable:
+def mage_counter() -> Callable[[], int]:
     counter: int = 0
     def count() -> int:
         nonlocal counter
@@ -14,7 +13,7 @@ def mage_counter() -> Callable:
     return (count)
 
 
-def spell_accumulator(initial_power: int) -> Callable:
+def spell_accumulator(initial_power: int) -> Callable[[], int]:
     power: int = initial_power
     def accumulate(amount: int) -> int:
         nonlocal power

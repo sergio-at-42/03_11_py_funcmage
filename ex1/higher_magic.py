@@ -2,7 +2,7 @@
 
 
 import random
-from typing import Callable
+from collections.abc import Callable
 
 
 def heal(target: str, power: int = 10) -> str:

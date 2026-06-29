@@ -3,7 +3,8 @@
 
 import functools
 import operator
-from typing import Any, Callable
+from typing import Any
+from collections.abc import Callable
 
 
 def enchantment(power: int, element: str, target: str) -> str:

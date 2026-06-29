@@ -3,7 +3,7 @@
 import random
 import functools
 import time
-from typing import Any, Callable
+from collections.abc import Callable
 
 
 def spell_timer(func: Callable) -> Callable:
@@ -26,12 +26,17 @@ def power_validator(min_power: int) -> Callable:
 
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
+            power: int = 0
             result: str = "Insufficient power for this spell"
-            if args:
+            if "power" in kwargs:
+                power = kwargs["power"]
+            elif args:
                 if isinstance(args[0], int) and args[0] >= min_power:
-                    result = func(*args, **kwargs)
+                    power = args[0]
                 elif args[2] >= min_power:
-                    result = func(*args, **kwargs)
+                    power = args[2]
+            if power >= min_power:
+                result = func(*args, **kwargs)
             return (result)
 
         return (wrapper)
