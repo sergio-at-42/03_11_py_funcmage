@@ -4,12 +4,13 @@ import random
 import functools
 import time
 from collections.abc import Callable
+from typing import Any
 
 
-def spell_timer(func: Callable) -> Callable:
+def spell_timer(func: Callable[..., Any]) -> Callable[..., Any]:
 
     @functools.wraps(func)
-    def wrapper(*args, **kwargs):
+    def wrapper(*args, **kwargs) -> Any:
         print(f"Casting {func.__name__}...")
         start = time.perf_counter()
         result = func(*args, **kwargs)
@@ -20,12 +21,12 @@ def spell_timer(func: Callable) -> Callable:
     return (wrapper)
 
 
-def power_validator(min_power: int) -> Callable:
+def power_validator(min_power: int) -> Callable[..., Any]:
         
-    def decorator_factory(func):
+    def decorator_factory(func: Callable[..., Any]) -> Callable[..., Any]:
 
         @functools.wraps(func)
-        def wrapper(*args, **kwargs):
+        def wrapper(*args, **kwargs) -> Any:
             power: int = 0
             result: str = "Insufficient power for this spell"
             if "power" in kwargs:
@@ -44,12 +45,12 @@ def power_validator(min_power: int) -> Callable:
     return (decorator_factory)
 
 
-def retry_spell(max_attempts: int) -> Callable:
+def retry_spell(max_attempts: int) -> Callable[..., Any]:
 
-    def decorator_factory(func):
+    def decorator_factory(func: Callable[..., Any]) -> Callable[..., Any]:
         
         @functools.wraps(func)
-        def wrapper(*args, **kwargs):
+        def wrapper(*args, **kwargs) -> Any:
             attemp: int = 1
             while attemp <= max_attempts:
                 try:
@@ -129,7 +130,7 @@ def decorator_mastery() -> None:
     print(f"Test name Toto42 : {MageGuild.validate_mage_name("Toto42")}")
     print(merlin.cast_spell("Lightning", 69))
     print(zotar.cast_spell("Fireball", 2))
-    # print(MageGuild.cast_spell("Fireball", 12))
+    print(zotar.cast_spell("Fireball", power=256))
     print("")
 
 
