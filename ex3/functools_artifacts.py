@@ -29,7 +29,7 @@ def enchantment(power: int, element: str, target: str) -> str:
 
 
 def spell_reducer(spells: list[int], operation: str) -> int:
-    ops: dict[str, Callable] = {
+    ops: dict[str, Callable[..., Any]] = {
         "add": operator.add,
         "multiply": operator.mul,
         "max": max,
@@ -44,7 +44,7 @@ def spell_reducer(spells: list[int], operation: str) -> int:
     return (reduce)
 
 
-def partial_enchanter(base_enchantment: Callable) -> dict[str,Callable]:
+def partial_enchanter(base_enchantment: Callable[[int, str,str], str]) -> dict[str, Callable[..., Any]]:
     return ({
         "fire": functools.partial(base_enchantment, 50, "fire"),
         "ice": functools.partial(base_enchantment, 50, "ice"),
@@ -61,19 +61,19 @@ def memoized_fibonacci(n: int) -> int:
 
 def spell_dispatcher() -> Callable[[Any], str]:
     @functools.singledispatch
-    def dispatcher_func(spell_type) -> str:
+    def dispatcher_func(spell_type: Any) -> str:
         return (f"Unknown spell type : {spell_type}")
     
     @dispatcher_func.register
-    def _(spell_type: int):
+    def _(spell_type: int) -> str:
         return (f"Damage spell: {spell_type} damage")
 
     @dispatcher_func.register
-    def _(spell_type: str):
+    def _(spell_type: str) -> str:
         return (f"Enchantment: {spell_type}")
 
     @dispatcher_func.register
-    def _(spell_type: list):
+    def _(spell_type: list[Any]) -> str:
         return (f"Multi-cast: {len(spell_type)} spells")
 
     return (dispatcher_func)

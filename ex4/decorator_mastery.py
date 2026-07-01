@@ -10,7 +10,7 @@ from typing import Any
 def spell_timer(func: Callable[..., Any]) -> Callable[..., Any]:
 
     @functools.wraps(func)
-    def wrapper(*args, **kwargs) -> Any:
+    def wrapper(*args, **kwargs) -> Any:    # type: ignore
         print(f"Casting {func.__name__}...")
         start = time.perf_counter()
         result = func(*args, **kwargs)
@@ -26,7 +26,7 @@ def power_validator(min_power: int) -> Callable[..., Any]:
     def decorator_factory(func: Callable[..., Any]) -> Callable[..., Any]:
 
         @functools.wraps(func)
-        def wrapper(*args, **kwargs) -> Any:
+        def wrapper(*args, **kwargs) -> Any:    # type: ignore
             power: int = 0
             result: str = "Insufficient power for this spell"
             if "power" in kwargs:
@@ -50,7 +50,7 @@ def retry_spell(max_attempts: int) -> Callable[..., Any]:
     def decorator_factory(func: Callable[..., Any]) -> Callable[..., Any]:
         
         @functools.wraps(func)
-        def wrapper(*args, **kwargs) -> Any:
+        def wrapper(*args, **kwargs) -> Any:    # type: ignore
             attemp: int = 1
             while attemp <= max_attempts:
                 try:

@@ -5,46 +5,46 @@ import random
 from collections.abc import Callable
 
 
-def heal(target: str, power: int = 10) -> str:
+def heal(target: str, power: int) -> str:
     return (f"Heal restores {target} for {power} HP")
 
 
-def fireball(target: str, power: int = 10) -> str:
+def fireball(target: str, power: int) -> str:
     return (f"Attack {target} with fireball of {power} HP")
 
 
-def is_a_dragon(target: str, power: int = 10) -> bool:
+def is_a_dragon(target: str, power: int) -> bool:
     if target == "Dragon":
         return (True)
     return (False)
 
 
-def is_a_wizard(target: str, power: int = 10) -> bool:
+def is_a_wizard(target: str, power: int) -> bool:
     if target == "Wizard":
         return (True)
     return (False)
 
 
-def power_over_20(target: str, power: int = 10) -> bool:
+def power_over_20(target: str, power: int) -> bool:
     if power >= 20:
         return (True)
     return (False)
 
 
-def spell_combiner(spell1: Callable, spell2: Callable) -> Callable:
-    def combiner(target: str) -> tuple[str, str]:
-        return (spell1(target), spell2(target))
+def spell_combiner(spell1: Callable[[str, int], str], spell2: Callable[[str, int], str]) -> Callable[[str, int], tuple[str, str]]:
+    def combiner(target: str, power: int) -> tuple[str, str]:
+        return (spell1(target, power), spell2(target, power))
     return (combiner)
 
 
-def power_amplifier(base_spell: Callable, multiplier: int) -> Callable:
-    def amplifier(target: str, power: int = 10) -> str:
+def power_amplifier(base_spell: Callable[[str, int], str], multiplier: int) -> Callable[[str, int], str]:
+    def amplifier(target: str, power: int) -> str:
         return (base_spell(target, power * multiplier))
     return (amplifier)
 
 
-def conditional_caster(condition: Callable, spell: Callable) -> Callable:
-    def caster(target: str, power: int = 10) -> str:
+def conditional_caster(condition: Callable[[str, int], bool], spell: Callable[[str, int], str]) -> Callable[[str, int], str]:
+    def caster(target: str, power: int) -> str:
         if condition(target, power):
             return (spell(target, power))
         else:
@@ -52,7 +52,7 @@ def conditional_caster(condition: Callable, spell: Callable) -> Callable:
     return (caster)
 
 
-def spell_sequence(spells: list[Callable]) -> Callable:
+def spell_sequence(spells: list[Callable[[str, int], str]]) -> Callable[[str, int], list[str]]:
     def sequence(target: str, power: int = 10) -> list[str]:
         return (list(spell(target, power) for spell in spells))
     return (sequence)
@@ -67,7 +67,7 @@ def higher_magic() -> None:
 
     print("Testing spell combiner...")
     combined = spell_combiner(fireball, heal)
-    print(f"Combined spell result : {combined(target())}")
+    print(f"Combined spell result : {combined(target(), power())}")
     print("")
 
     print("Testing power amplifier...")
