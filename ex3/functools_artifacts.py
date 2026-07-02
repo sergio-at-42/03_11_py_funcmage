@@ -8,7 +8,7 @@ from collections.abc import Callable
 
 
 def enchantment(power: int, element: str, target: str) -> str:
-    return(f"{element} enchantment with {power} HP to cast on {target}")
+    return (f"{element} enchantment with {power} HP to cast on {target}")
 
 
 # def spell_reducer(spells: list[int], operation: str) -> int:
@@ -44,7 +44,8 @@ def spell_reducer(spells: list[int], operation: str) -> int:
     return (reduce)
 
 
-def partial_enchanter(base_enchantment: Callable[[int, str,str], str]) -> dict[str, Callable[..., Any]]:
+def partial_enchanter(base_enchantment: Callable[[int, str, str], str]
+                      ) -> dict[str, Callable[..., Any]]:
     return ({
         "fire": functools.partial(base_enchantment, 50, "fire"),
         "ice": functools.partial(base_enchantment, 50, "ice"),
@@ -63,7 +64,7 @@ def spell_dispatcher() -> Callable[[Any], str]:
     @functools.singledispatch
     def dispatcher_func(spell_type: Any) -> str:
         return (f"Unknown spell type : {spell_type}")
-    
+
     @dispatcher_func.register
     def _(spell_type: int) -> str:
         return (f"Damage spell: {spell_type} damage")

@@ -22,7 +22,7 @@ def spell_timer(func: Callable[..., Any]) -> Callable[..., Any]:
 
 
 def power_validator(min_power: int) -> Callable[..., Any]:
-        
+
     def decorator_factory(func: Callable[..., Any]) -> Callable[..., Any]:
 
         @functools.wraps(func)
@@ -48,7 +48,7 @@ def power_validator(min_power: int) -> Callable[..., Any]:
 def retry_spell(max_attempts: int) -> Callable[..., Any]:
 
     def decorator_factory(func: Callable[..., Any]) -> Callable[..., Any]:
-        
+
         @functools.wraps(func)
         def wrapper(*args, **kwargs) -> Any:    # type: ignore
             attemp: int = 1
@@ -58,10 +58,11 @@ def retry_spell(max_attempts: int) -> Callable[..., Any]:
                 except Exception:
                     if attemp < max_attempts:
                         attemp += 1
-                        print(f"Spell failed, retrying... (attempt {attemp}/{max_attempts})")
+                        print("Spell failed, retrying... (attempt ", end="")
+                        print(f"{attemp}/{max_attempts})")
                     else:
-                        result = f"Spell casting failed after {max_attempts} attempts"
-                        return (result)
+                        return (f"Spell casting failed after {max_attempts
+                                                              } attempts")
 
         return (wrapper)
 
@@ -73,7 +74,7 @@ class MageGuild:
     @staticmethod
     def validate_mage_name(name: str) -> bool:
         validate: bool = False
-        if len(name) >=3:
+        if len(name) >= 3:
             validate = True
             for c in name:
                 if not c.isalpha() and not c.isspace():
@@ -97,7 +98,7 @@ def freeze(power: int = 10) -> str:
     return (f"Freeze cast with {power} power !")
 
 
-@retry_spell(4)
+@retry_spell(2)
 def meteor(power: int = 10) -> str:
     if random.choice([True, False]):
         raise Exception()
@@ -108,7 +109,7 @@ def decorator_mastery() -> None:
 
     print("Testing spell timer...")
     print(f"Result: {fireball()}")
-    print(f"Result: {fireball(42)}")    
+    print(f"Result: {fireball(42)}")
     print("")
 
     print("Testing power validator...")

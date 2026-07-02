@@ -7,36 +7,43 @@ from typing import Any
 
 def mage_counter() -> Callable[[], int]:
     counter: int = 0
+
     def count() -> int:
         nonlocal counter
         counter += 1
         return (counter)
+
     return (count)
 
 
 def spell_accumulator(initial_power: int) -> Callable[[int], int]:
     power: int = initial_power
+
     def accumulate(amount: int) -> int:
         nonlocal power
         power += amount
         return (power)
+
     return (accumulate)
 
 
 def enchantment_factory(enchantment_type: str) -> Callable[[str], str]:
+
     def enchantment(item_name: str) -> str:
         return (f"{enchantment_type} {item_name}")
+
     return (enchantment)
 
 
 def memory_vault() -> dict[str, Callable[..., Any]]:
     memory: dict[str, str] = {}
+
     def store(key: str, value: str) -> None:
-        nonlocal memory
         memory[key] = value
+
     def recall(key: str) -> str:
-        nonlocal memory
         return (memory.get(key, "Memory not found"))
+
     return ({"store": store, "recall": recall})
 
 
