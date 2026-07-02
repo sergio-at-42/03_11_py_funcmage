@@ -32,9 +32,9 @@ def power_validator(min_power: int) -> Callable[..., Any]:
             if "power" in kwargs:
                 power = kwargs["power"]
             elif args:
-                if isinstance(args[0], int) and args[0] >= min_power:
+                if isinstance(args[0], int):
                     power = args[0]
-                elif args[2] >= min_power:
+                else:
                     power = args[2]
             if power >= min_power:
                 result = func(*args, **kwargs)

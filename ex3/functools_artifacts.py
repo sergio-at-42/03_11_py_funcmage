@@ -46,10 +46,11 @@ def spell_reducer(spells: list[int], operation: str) -> int:
 
 def partial_enchanter(base_enchantment: Callable[[int, str, str], str]
                       ) -> dict[str, Callable[..., Any]]:
+    enchantment = functools.partial(base_enchantment, 50, "ice")
     return ({
-        "fire": functools.partial(base_enchantment, 50, "fire"),
-        "ice": functools.partial(base_enchantment, 50, "ice"),
-        "lightning": functools.partial(base_enchantment, 50, "lightning")
+        "spe1": enchantment,
+        "spe2": enchantment,
+        "spe3": enchantment
     })
 
 
@@ -65,15 +66,15 @@ def spell_dispatcher() -> Callable[[Any], str]:
     def dispatcher_func(spell_type: Any) -> str:
         return (f"Unknown spell type : {spell_type}")
 
-    @dispatcher_func.register
+    @dispatcher_func.register(int)
     def _(spell_type: int) -> str:
         return (f"Damage spell: {spell_type} damage")
 
-    @dispatcher_func.register
+    @dispatcher_func.register(str)
     def _(spell_type: str) -> str:
         return (f"Enchantment: {spell_type}")
 
-    @dispatcher_func.register
+    @dispatcher_func.register(list)
     def _(spell_type: list[Any]) -> str:
         return (f"Multi-cast: {len(spell_type)} spells")
 
@@ -94,9 +95,9 @@ def functools_artifacts() -> None:
 
     print("Testing partial enchanter...")
     enchants = partial_enchanter(enchantment)
-    print(enchants["fire"]("Sword"))
-    print(enchants["ice"]("Shield"))
-    print(enchants["lightning"]("Bow"))
+    print(enchants["spe1"]("Dragon"))
+    print(enchants["spe2"]("Wizard"))
+    print(enchants["spe3"]("Tetena"))
     print("")
 
     print("Testing memoized fibonacci...")
