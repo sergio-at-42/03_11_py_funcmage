@@ -98,7 +98,7 @@ def freeze(power: int = 10) -> str:
     return (f"Freeze cast with {power} power !")
 
 
-@retry_spell(2)
+@retry_spell(4)
 def meteor(power: int = 10) -> str:
     if random.choice([True, False]):
         raise Exception()
